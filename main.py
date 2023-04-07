@@ -15,7 +15,20 @@ for img in std_img_namelist:
     std_namelist.append(os.path.splitext(img)[0])
 
 def put_present(name):
-    pass
+    with open('Attendance.csv', 'r+') as f:
+        data_in_line = f.readlines()
+        namelist = []
+        
+        for line in data_in_line:
+            entry = line.split(',')
+            namelist.append(entry[0])
+        
+        if name not in namelist:
+            time = datetime.now()
+            Ftime = time.strftime('%H:%M')
+            f.writelines(f'\n{name}, {Ftime}')
+            print(f'{name} Present!')
+
 
 def encode_imgs(images):
     encode_list = []
@@ -45,13 +58,14 @@ while True:
         
         if matches[matchIndex]:
             std_name = std_namelist[matchIndex].upper()
-            print(std_name)
             
             y1, x2, y2, x1 = facelocation
             y1, x2, y2, x1 = y1*4, x2*4, y2*4, x1*4
             cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.rectangle(img, (x1, y2-35), (x2, y2), (0, 255, 0), cv2.FILLED)
             cv2.putText(img, std_name, (x1+6, y2-6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
+            print(std_name)
+            put_present(std_name)
     
-    cv2.imshow('WebCam', img)
+    cv2.imshow('Web Cam', img)
     cv2.waitKey(1)

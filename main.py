@@ -29,7 +29,6 @@ def put_present(name):
             f.writelines(f'\n{name}, {Ftime}')
             print(f'{name} Present!')
 
-
 def encode_imgs(images):
     encode_list = []
     for img in images:
@@ -67,5 +66,11 @@ while True:
             print(std_name)
             put_present(std_name)
     
-    cv2.imshow('Web Cam', img)
-    cv2.waitKey(1)
+    cv2.imshow('Web Cam Frames', img)
+    key = cv2.waitKey(1) & 0xFF
+    
+    if key == ord("q"):
+        break
+
+cv2.destroyAllWindows()
+cap.release()
